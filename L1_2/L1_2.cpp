@@ -86,9 +86,9 @@ wstring Decrypt(const wstring& text, const wstring& alphabet, const wstring& sub
  * @brief Program entry point supporting CLI arguments and interactive mode.
  */
 int wmain(int argc, wchar_t* argv[]) {
-    _setmode(_fileno(stdout), _O_U16TEXT);
-    _setmode(_fileno(stdin), _O_U16TEXT);
-    _setmode(_fileno(stderr), _O_U16TEXT);
+    _setmode(_fileno(stdout), _O_U8TEXT);
+    _setmode(_fileno(stdin), _O_U8TEXT);
+    _setmode(_fileno(stderr), _O_U8TEXT);
 
     string key_file = "sub_table_en.txt"; 
 
@@ -99,13 +99,14 @@ int wmain(int argc, wchar_t* argv[]) {
         wstring sub_table = GenerateOrLoadTable(DEFAULT_ALPHABET, key_file);
 
         if (mode == 1) {
-            wcout << L"Result of Encrypt " << Encrypt(text, DEFAULT_ALPHABET, sub_table) << endl;
+            wcout << L"Result of Encrypt: " << Encrypt(text, DEFAULT_ALPHABET, sub_table) << endl;
         }
         else if (mode == 2) {
             wcout << L"Result of Decrypt: " << Decrypt(text, DEFAULT_ALPHABET, sub_table) << endl;
         }
 
         wcout << L"\nPress Enter to exit...";
+        wcin.ignore(numeric_limits<streamsize>::max(), L'\n');
         wcin.get();
         return 0;
     }
